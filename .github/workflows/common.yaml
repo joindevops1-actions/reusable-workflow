@@ -32,3 +32,9 @@ jobs:
       run: npm install
     - name: docker build
       run: docker build -t 160885265516.dkr.ecr.us-east-1.amazonaws.com/${{ inputs.project }}/${{ inputs.component }}:${{ steps.package-version.outputs.version }} .
+    - name: Configure AWS Credentials 2
+      uses: aws-actions/configure-aws-credentials@v6.0.0
+      with:
+        aws-region: us-east-1
+        aws-access-key-id: ${{ steps.creds.outputs.aws-access-key-id }}
+        aws-secret-access-key: ${{ steps.creds.outputs.aws-secret-access-key }}
