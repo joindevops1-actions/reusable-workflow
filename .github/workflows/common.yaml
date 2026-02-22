@@ -1,0 +1,32 @@
+name: common-ci-cd
+on:
+  workflow_call:
+    inputs:
+      project:
+        required: true
+        type: string
+      component:
+        required: true
+        type: string
+      app_type:
+        required: true
+        type: string
+jobs:
+  ci: # job-name
+    runs-on: self-hosted
+    outputs:
+      appVersion: ${{ steps.package-version.outputs.version }}
+    steps:
+    - name: checkout code
+      uses: actions/checkout@v6
+    - name: check the files
+      run: ls -l
+    - name: print inputs
+      run: echo "Project is ${{ input.project }}"
+    - name: Get app version
+      id: package-version
+      run: echo "version=$(jq -r '.version' package.json)" >> "$GITHUB_OUTPUT"
+    - name: print app version
+      run: echo ${{ steps.package-version.output.version }}
+    - name: install dependencies
+      run: npm install
