@@ -45,3 +45,22 @@ jobs:
         aws-region: us-east-1
     - name: push the image to ECR
       run:
+    - name: push the image to ECR
+      run:
+        aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin
+        160885265516.dkr.ecr.us-east-1.amazonaws.com
+        docker push 160885265516.dkr.ecr.us-east-1.amazonaws.com/${{ inputs.project }}/${{ inputs.component }}:${{ steps.package-version.outputs.version }}
+
+  cd:
+    runs-on:
+    needs: ci
+    env:
+      appVersion: ${{ needs.ci.output.appVersion }}
+    steps:
+      - name: checkout deploy repo
+        uses: actions/checkout@v6
+        with:
+          repository: joindevops1-actions/catalogue-deploy
+      - name: check the files
+        run: ls -l
+    
