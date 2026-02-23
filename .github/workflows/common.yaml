@@ -75,5 +75,6 @@ jobs:
       - name: deploy to EKS
         run: |
           cd helm
-          helm upgrade --install ${{ component }} -f values-dev.yaml --set deployment. imageVersion="$appVersion"
+          helm upgrade --install ${{ inputs.component }} -f values-dev.yaml --set deployment. imageVersion="$appVersion"
+
     
